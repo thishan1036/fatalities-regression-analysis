@@ -12,6 +12,9 @@ Using the Fatalities dataset in R, this project demonstrates a rigorous, step-by
 
 - Conclusion: This project is a case study in the proper diagnostic and validation workflow for statistical modeling. It proves the ability to not just build a model, but to rigorously test its assumptions and refine it based on statistical evidence.
 
+## View the Full Report
+[**Click here to view the complete rendered report.**](./fatalities_analysis.md)
+
 ## Technology Stack & Methods
 * **Languages/Libraries:** R, RStudio, faraway, sur, smallstuff, broom, AER
 * **Model Diagnostics:**
@@ -31,9 +34,9 @@ Using the Fatalities dataset in R, this project demonstrates a rigorous, step-by
 
 ## How to Run
 1. Clone the repository to your local machine.
-2. The main analysis script is fatalities_analysis.R.
-3. Ensure to have the required libraries installed in your R environment.
-4. Run the fatalities_analysis.R script.
+2. Ensure you have R and RStudio installed, along with the required libraries listed in the 'Technology Stack' section.
+3. Open the 'fatalities_analysis.Rmd' file in RStudio.
+4. To reproduce the final report ('fatalities_analysis.md'), you can click the 'Knit' button within RStudio.
 
 ## Data Sources
 * The analysis uses the Fatalities dataset, which is included in the **AER package** in R.
