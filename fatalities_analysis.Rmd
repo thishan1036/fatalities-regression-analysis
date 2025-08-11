@@ -1,0 +1,293 @@
+---
+title: "Analyzing High-risk Factors in Vehicle Accident Fatalities"
+author: "Young Han"
+date: "2024-12-07"
+output: github_document
+---
+## Project Objective:
+Using the Fatalities dataset in R, this project demonstrates a step-by-step process for the diagnostic analysis and validation of a multiple linear regression model. The primary goal is not on predictive accuracy, but on the application of statistical tests to validate model assumptions and refine the model based on that evidence.
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Load libraries
+```{r results='hide'}
+################################################################################
+# External Functions
+################################################################################
+library(faraway)
+library(smallstuff)
+library(broom)
+library(sur)
+library(AER)
+################################################################################
+# Internal Functions
+################################################################################
+
+################################################################################
+# Save the environment 
+################################################################################
+parSave=par(no.readonly = TRUE)
+#par(parSave)
+################################################################################
+# Processing 
+################################################################################
+```
+
+## Load data and conduct simple data check 
+```{r}
+data("Fatalities")
+summary(Fatalities)
+print('Dataset Dimension:')
+paste0('Rows: ', nrow(Fatalities),', ', 'Columns: ', ncol(Fatalities))
+```
+
+- Pre-selected predictors
+```{r}
+head(Fatalities[c('unemp','income','spirits','beertax')], 3)
+```
+
+- Check missing values
+```{r}
+sum(is.na(Fatalities))
+which(!complete.cases(Fatalities))
+```
+
+- There are 2 missing values in the dataset. Both are on 28th observation
+- One NA in jail variable
+- One NA in service variable
+- We decided to omit a row with missing values
+
+```{r}
+Fatalities=na.omit(Fatalities)
+print('Dataset Dimension after omitting NAs:')
+paste0('Rows: ', nrow(Fatalities),', ', 'Columns: ', ncol(Fatalities))
+```
+
+## Perform linear regression on dataset with pre-selected predictors
+**First model**
+```{r}
+lmod1=lm(fatal~unemp+income+spirits+beertax+miles,Fatalities)
+summary(lmod1)
+```
+
+```{r}
+coef(lmod1)
+```
+
+**Check residual plot**
+```{r}
+plot(residuals(lmod1)~fitted(lmod1),
+     xlab='Fitted',
+     ylab = 'Residuals',
+     main='Residual Plot')
+abline(h=0,col=2)
+```
+
+- Clearly shows funnel shape indicating heteroscedasticity
+
+**Check p-value and Q-Q plot**
+```{r}
+summary(lm(sqrt(abs(residuals(lmod1)))~fitted(lmod1)))
+glance(lmod1)$p.value
+qqnorm(resid(lmod1));qqline(resid(lmod1))
+```
+
+- p-value is too small (4.36e-18 < 0.05). We reject the null hypothesis of homoscedasticity
+- Also, qqplot shows long tailed distribution.
+
+**Conduct Shapiro test to confirm**
+```{r}
+shapiro.test(residuals(lmod1))
+glance(shapiro.test(residuals(lmod1)))$p.value
+```
+- p-value is too small (2.51e-22<0.05). reject null hypothesis of normality. 
+- We reject first model and move on to the next model.
+
+**Second model: Apply transformation to the response and remove a predictor**
+```{r}
+lmod2=update(lmod1,log(fatal)~.-miles)
+summary(lmod2)
+```
+
+```{r}
+coef(lmod2)
+```
+
+**Check residual plot**
+```{r}
+plot(residuals(lmod2)~fitted(lmod2),
+     xlab='Fitted',
+     ylab = 'Residuals',
+     main='Residual Plot')
+abline(h=0,col=2)
+```
+
+- No funnel shape shown
+
+**Check p-value and Q-Q plot**
+```{r}
+summary(lm(sqrt(abs(residuals(lmod2)))~fitted(lmod2)))
+qqnorm(resid(lmod2));qqline(resid(lmod2))
+```
+
+- p-value is 0.953>0.05. We retain the null hypothesis of homoscedasticity.
+- Residuals normally distributed
+
+**Conduct Shapiro test to confirm**
+```{r}
+shapiro.test(residuals(lmod2))
+```
+
+- p-value is 0.536>0.05. We retain the null hypothesis of normality and conclude that the residuals are normally distributed.
+
+## Check presence of leverages, outliers, and influential points
+**High leverages**
+```{r}
+hatv=hatvalues(lmod2)
+hi=hatv[hatv>2*mean(hatv)]
+paste0('Number of high leverages: ', length(hi))
+```
+
+**Plot highlighting 4 highest leverages**
+```{r}
+hiorder=names(hi[order(hi,decreasing = T)[1:4]])
+halfnorm(hatv,4,ylab='Leverages');qqlineHalf(hatv)
+Fatalities[hiorder,c('state','unemp','income','spirits','beertax')]
+```
+
+- States with high spirits consumption (Nevada and New Hampshire) and a state with high beertax (Georgia) seem to have extreme predictor values
+
+**New model without high leverages**
+```{r}
+idx2=as.numeric(names(hi))
+lmod3=update(lmod2,subset=-idx2)
+```
+
+```{r}
+summary(lmod2)
+summary(lmod3)
+```
+
+- Not much difference after removing high leverages
+- We decided to continue working with our second model, lmod2 
+(lmod2: R-squared: 46.8%, RSE: 0.679, lmod3: R-squared: 48.6%, RSE: 0.670)
+
+**Outliers**
+```{r}
+out=rstudent(lmod2)[abs(rstudent(lmod2))>3]
+Fatalities[282,c('state','unemp','income','spirits','beertax')]
+```
+- Only 1 outlier detected
+
+**New model without outlier**
+```{r}
+idx3=order(abs(rstudent(lmod2)),decreasing = T)[1]
+lmod4=update(lmod2,subset=-idx3)
+```
+
+```{r}
+summary(lmod2)
+summary(lmod4)
+```
+- Again, not much difference after taking out an outlier 
+- We decided to continue working with our second model, lmod2
+(lmod2: R-squared: 46.8%, RSE: 0.679, lmod4: R-squared: 47.6%, RSE: 0.671)
+
+**Influential observations**
+```{r}
+cook=cooks.distance(lmod2)
+idx4=order(cook,decreasing = T)[1:6]
+cook[idx4]
+```
+- All of them are exhibit very low scores (less than 0.5)
+```{r}
+plot(cook,ylab = "Cook's Distance",
+     main = "Cook's Distance vs. Index")
+unname(cook[idx4])
+points(idx4,unname(cook[idx4]),pch=16,col=3)
+```
+
+```{r}
+halfnorm(cook,6,ylab = "Cook's Distance",
+         main="Cook's Distance vs. Half-normal Quantiles")
+qqlineHalf(cook)
+```
+
+- Several points look apart from the others
+- We decided to try a new model without 6 highest influential observations
+
+**New model without influential observations**
+```{r}
+lmod5=update(lmod2,subset=-idx4)
+```
+
+```{r}
+summary(lmod2) # R2: 46.8%, RSE: 0.679
+summary(lmod5) # R2: 52.0%, RSE: 0.650
+```
+- Slightly better result by removing 6 highest influential observations
+(lmod2: R-squared: 46.8%, RSE: 0.679, lmod5: R-squared: 52.0%, RSE: 0.650)
+
+**Check final model (lmod5)**
+```{r}
+plot(residuals(lmod5)~fitted(lmod5),
+     xlab='Fitted',
+     ylab = 'Residuals',
+     main='Residual Plot')
+abline(h=0,col=2)
+```
+
+- No clear pattern visible indicating possible homoscedasticity
+
+**Check p-value and Q-Q plot**
+```{r}
+summary(lm(sqrt(abs(residuals(lmod5)))~fitted(lmod5)))
+qqnorm(resid(lmod5));qqline(resid(lmod5))
+```
+
+- p-value is 0.992>0.05. We retain the null hypothesis of homoscedasticity the final model
+
+**Conduct Shapiro test to confirm**
+```{r}
+shapiro.test(residuals(lmod5))
+```
+- p-value is 0.0611>0.05. We retain the null hypothesis of normality and conclude that the residuals are normally distributed
+
+## Check Collinearity
+```{r}
+X_1=model.matrix(lmod5)[,-1]
+cor(X_1)
+```
+- No significantly strong correlation in the model
+```{r}
+vif(lmod5)
+```
+- Low VIFs for all predictors (all < 5)
+
+## Conclusion with synthetic dataset
+**Make prediction on synthetic dataset with the best model**
+```{r}
+(synthetic_data=data.frame(unemp=c(4.5,4.5,4.5,9),
+                           income=c(14000,20000,14000,14000),
+                           spirits=c(2.5,2.5,4.5,2.5),
+                           beertax=c(.25,.15,.15,.15)))
+pred2=predict(lmod5,synthetic_data,interval = 'pred')
+```
+
+```{r}
+exp(pred2[1,])
+```
+- For the first observation the 95% PI is (44, 578) and the fitted value is 159. We are 95% confident that the states with a 4.5% unemployment, $14,000 income per person, 2.5% spirits consumption, and 0.25% tax on case of beer will have a total number of vehicle fatalities between 44 and 578.
+```{r}
+exp(pred2[2,])
+```
+- For the second observation, the 95% PI is (426, 5702) and the fitted value is 1558. We are 95% confident that the states with a 4.5% unemployment, $20,000 income per person, 2.5% spirits consumption, and 0.15% tax on case of beer will have a total number of vehicle fatalities between 63 and 5439.
+```{r}
+exp(pred2[3,])
+```
+- For the second observation, the 95% PI is (11, 150) and the fitted value is 40. We are 95% confident that the states with a 4.5% unemployment, $14,000 income per person, 4.5% spirits consumption, and 0.15% tax on case of beer will have a total number of vehicle fatalities between 11 and 150.
+```{r}
+exp(pred2[4,])
+```
+- For the second observation, the 95% PI is (122, 1601) and the fitted value is 443. We are 95% confident that the states with a 9.0% unemployment, $14,000 income per person, 2.5% spirits consumption, and 0.15% tax on case of beer will have a total number of vehicle fatalities between 122 and 1601.
