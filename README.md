@@ -29,11 +29,9 @@ Using the Fatalities dataset in R, this project demonstrates a rigorous, step-by
 ## Project Structure
 * fatalities_analysis.R file: The main file containing the entire analysis, from data loading to model diagnostics and conclusion.
 
-* smallstuff2.R file: A file containing set of pre-made internal functions by Dr. Small.
-
 ## How to Run
 1. Clone the repository to your local machine.
-2. The main analysis script is fatalities_analysis.R. The helper script smallstuff2.R should be included in the repository and is sourced automatically.
+2. The main analysis script is fatalities_analysis.R.
 3. Ensure to have the required libraries installed in your R environment.
 4. Run the fatalities_analysis.R script.
 
