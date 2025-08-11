@@ -86,71 +86,6 @@ data("Fatalities")
 summary(Fatalities)
 ```
 
-    ##      state       year       spirits          unemp            income     
-    ##  al     :  7   1982:48   Min.   :0.790   Min.   : 2.400   Min.   : 9514  
-    ##  az     :  7   1983:48   1st Qu.:1.300   1st Qu.: 5.475   1st Qu.:12086  
-    ##  ar     :  7   1984:48   Median :1.670   Median : 7.000   Median :13763  
-    ##  ca     :  7   1985:48   Mean   :1.754   Mean   : 7.347   Mean   :13880  
-    ##  co     :  7   1986:48   3rd Qu.:2.013   3rd Qu.: 8.900   3rd Qu.:15175  
-    ##  ct     :  7   1987:48   Max.   :4.900   Max.   :18.000   Max.   :22193  
-    ##  (Other):294   1988:48                                                   
-    ##      emppop         beertax           baptist            mormon       
-    ##  Min.   :42.99   Min.   :0.04331   Min.   : 0.0000   Min.   : 0.1000  
-    ##  1st Qu.:57.69   1st Qu.:0.20885   1st Qu.: 0.6268   1st Qu.: 0.2722  
-    ##  Median :61.36   Median :0.35259   Median : 1.7492   Median : 0.3931  
-    ##  Mean   :60.81   Mean   :0.51326   Mean   : 7.1569   Mean   : 2.8019  
-    ##  3rd Qu.:64.41   3rd Qu.:0.65157   3rd Qu.:13.1271   3rd Qu.: 0.6293  
-    ##  Max.   :71.27   Max.   :2.72076   Max.   :30.3557   Max.   :65.9165  
-    ##                                                                       
-    ##     drinkage          dry            youngdrivers         miles       breath   
-    ##  Min.   :18.00   Min.   : 0.00000   Min.   :0.07314   Min.   : 4576   no :181  
-    ##  1st Qu.:20.00   1st Qu.: 0.00000   1st Qu.:0.17037   1st Qu.: 7183   yes:155  
-    ##  Median :21.00   Median : 0.08681   Median :0.18539   Median : 7796            
-    ##  Mean   :20.46   Mean   : 4.26707   Mean   :0.18593   Mean   : 7891            
-    ##  3rd Qu.:21.00   3rd Qu.: 2.42481   3rd Qu.:0.20219   3rd Qu.: 8504            
-    ##  Max.   :21.00   Max.   :45.79210   Max.   :0.28163   Max.   :26148            
-    ##                                                                                
-    ##    jail     service        fatal            nfatal            sfatal     
-    ##  no  :241   no  :273   Min.   :  79.0   Min.   :  13.00   Min.   :  8.0  
-    ##  yes : 94   yes : 62   1st Qu.: 293.8   1st Qu.:  53.75   1st Qu.: 35.0  
-    ##  NA's:  1   NA's:  1   Median : 701.0   Median : 135.00   Median : 81.0  
-    ##                        Mean   : 928.7   Mean   : 182.58   Mean   :109.9  
-    ##                        3rd Qu.:1063.5   3rd Qu.: 212.00   3rd Qu.:131.0  
-    ##                        Max.   :5504.0   Max.   :1049.00   Max.   :603.0  
-    ##                                                                          
-    ##    fatal1517        nfatal1517      fatal1820       nfatal1820    
-    ##  Min.   :  3.00   Min.   : 0.00   Min.   :  7.0   Min.   :  0.00  
-    ##  1st Qu.: 25.75   1st Qu.: 4.00   1st Qu.: 38.0   1st Qu.: 11.00  
-    ##  Median : 49.00   Median :10.00   Median : 82.0   Median : 24.00  
-    ##  Mean   : 62.61   Mean   :12.26   Mean   :106.7   Mean   : 33.53  
-    ##  3rd Qu.: 77.00   3rd Qu.:15.25   3rd Qu.:130.2   3rd Qu.: 44.00  
-    ##  Max.   :318.00   Max.   :76.00   Max.   :601.0   Max.   :196.00  
-    ##                                                                   
-    ##    fatal2124       nfatal2124         afatal            pop          
-    ##  Min.   : 12.0   Min.   :  1.00   Min.   :  24.6   Min.   :  479000  
-    ##  1st Qu.: 42.0   1st Qu.: 13.00   1st Qu.:  90.5   1st Qu.: 1545251  
-    ##  Median : 97.5   Median : 30.00   Median : 211.6   Median : 3310503  
-    ##  Mean   :126.9   Mean   : 41.38   Mean   : 293.3   Mean   : 4930272  
-    ##  3rd Qu.:150.5   3rd Qu.: 49.00   3rd Qu.: 364.0   3rd Qu.: 5751735  
-    ##  Max.   :770.0   Max.   :249.00   Max.   :2094.9   Max.   :28314028  
-    ##                                                                      
-    ##     pop1517           pop1820           pop2124           milestot     
-    ##  Min.   :  21000   Min.   :  21000   Min.   :  30000   Min.   :  3993  
-    ##  1st Qu.:  71750   1st Qu.:  76962   1st Qu.: 103500   1st Qu.: 11692  
-    ##  Median : 163000   Median : 170982   Median : 241000   Median : 28484  
-    ##  Mean   : 230816   Mean   : 249090   Mean   : 336390   Mean   : 37101  
-    ##  3rd Qu.: 270500   3rd Qu.: 308311   3rd Qu.: 413000   3rd Qu.: 44140  
-    ##  Max.   :1172000   Max.   :1321004   Max.   :1892998   Max.   :241575  
-    ##                                                                        
-    ##     unempus         emppopus          gsp           
-    ##  Min.   :5.500   Min.   :57.80   Min.   :-0.123641  
-    ##  1st Qu.:6.200   1st Qu.:57.90   1st Qu.: 0.001182  
-    ##  Median :7.200   Median :60.10   Median : 0.032413  
-    ##  Mean   :7.529   Mean   :59.97   Mean   : 0.025313  
-    ##  3rd Qu.:9.600   3rd Qu.:61.50   3rd Qu.: 0.056501  
-    ##  Max.   :9.700   Max.   :62.30   Max.   : 0.142361  
-    ## 
-
 ``` r
 print('Dataset Dimension:')
 ```
@@ -163,7 +98,7 @@ paste0('Rows: ', nrow(Fatalities),', ', 'Columns: ', ncol(Fatalities))
 
     ## [1] "Rows: 336, Columns: 34"
 
-- Pre-selected predictors
+**Pre-selected predictors**
 
 ``` r
 head(Fatalities[c('unemp','income','spirits','beertax')], 3)
@@ -174,7 +109,7 @@ head(Fatalities[c('unemp','income','spirits','beertax')], 3)
     ## 2  13.7 10732.80    1.36 1.788991
     ## 3  11.1 11108.79    1.32 1.714286
 
-- Check missing values
+**Check missing values**
 
 ``` r
 sum(is.na(Fatalities))
@@ -259,7 +194,7 @@ plot(residuals(lmod1)~fitted(lmod1),
 abline(h=0,col=2)
 ```
 
-![](fatalities_analysis_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](fatalities_analysis_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 - Clearly shows funnel shape indicating heteroscedasticity
 
@@ -299,7 +234,7 @@ glance(lmod1)$p.value
 qqnorm(resid(lmod1));qqline(resid(lmod1))
 ```
 
-![](fatalities_analysis_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](fatalities_analysis_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 - p-value is too small (4.36e-18 \< 0.05). We reject the null hypothesis
   of homoscedasticity
@@ -375,7 +310,7 @@ plot(residuals(lmod2)~fitted(lmod2),
 abline(h=0,col=2)
 ```
 
-![](fatalities_analysis_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](fatalities_analysis_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 - No funnel shape shown
 
@@ -408,7 +343,7 @@ summary(lm(sqrt(abs(residuals(lmod2)))~fitted(lmod2)))
 qqnorm(resid(lmod2));qqline(resid(lmod2))
 ```
 
-![](fatalities_analysis_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](fatalities_analysis_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 - p-value is 0.953\>0.05. We retain the null hypothesis of
   homoscedasticity.
@@ -448,7 +383,7 @@ hiorder=names(hi[order(hi,decreasing = T)[1:4]])
 halfnorm(hatv,4,ylab='Leverages');qqlineHalf(hatv)
 ```
 
-![](fatalities_analysis_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](fatalities_analysis_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 ``` r
 Fatalities[hiorder,c('state','unemp','income','spirits','beertax')]
@@ -631,7 +566,7 @@ unname(cook[idx4])
 points(idx4,unname(cook[idx4]),pch=16,col=3)
 ```
 
-![](fatalities_analysis_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+![](fatalities_analysis_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
 
 ``` r
 halfnorm(cook,6,ylab = "Cook's Distance",
@@ -639,7 +574,7 @@ halfnorm(cook,6,ylab = "Cook's Distance",
 qqlineHalf(cook)
 ```
 
-![](fatalities_analysis_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
+![](fatalities_analysis_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
 - Several points look apart from the others
 - We decided to try a new model without 6 highest influential
@@ -719,7 +654,7 @@ plot(residuals(lmod5)~fitted(lmod5),
 abline(h=0,col=2)
 ```
 
-![](fatalities_analysis_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
+![](fatalities_analysis_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
 
 - No clear pattern visible indicating possible homoscedasticity
 
@@ -752,7 +687,7 @@ summary(lm(sqrt(abs(residuals(lmod5)))~fitted(lmod5)))
 qqnorm(resid(lmod5));qqline(resid(lmod5))
 ```
 
-![](fatalities_analysis_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
+![](fatalities_analysis_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
 
 - p-value is 0.992\>0.05. We retain the null hypothesis of
   homoscedasticity the final model

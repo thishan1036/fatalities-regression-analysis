@@ -35,19 +35,21 @@ parSave=par(no.readonly = TRUE)
 ```
 
 ## Load data and conduct simple data check 
-```{r}
+```{r results='hide'}
 data("Fatalities")
 summary(Fatalities)
+```
+
+```{r}
 print('Dataset Dimension:')
 paste0('Rows: ', nrow(Fatalities),', ', 'Columns: ', ncol(Fatalities))
 ```
-
-- Pre-selected predictors
+**Pre-selected predictors**
 ```{r}
 head(Fatalities[c('unemp','income','spirits','beertax')], 3)
 ```
 
-- Check missing values
+**Check missing values**
 ```{r}
 sum(is.na(Fatalities))
 which(!complete.cases(Fatalities))
